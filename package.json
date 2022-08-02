@@ -1,0 +1,25 @@
+{
+  "name": "projeto22-food_court-back",
+  "version": "1.0.0",
+  "main": "server.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "nodemon": "^2.0.19",
+    "nodenv": "^0.1.0"
+  },
+  "scripts": {
+    "build": "tsc src/server.ts",
+    "start": "node dist/server.js",
+    "dev": "nodemon src/server.ts"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.12",
+    "@types/express": "^4.17.13",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.7.4"
+  }
+}
