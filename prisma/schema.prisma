@@ -15,7 +15,7 @@ model User {
   name       String
   email      String   @unique
   password   String
-  avatarURL  String
+  avatarURL  String?
   permission String
   createdAt  DateTime @default(now())
 
