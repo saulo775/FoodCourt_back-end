@@ -6,5 +6,5 @@ export const userSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     avatarURL: Joi.string().pattern(REG_AVATAR),
-    permission: Joi.string().valid('gerente', 'caixa', 'garçon')
+    permission: Joi.string().valid('gerente', 'caixa', 'garçom')
 })

@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { User } from "@prisma/client"
 import { AppError } from "../errors/AppError.js";
 import userRepository from "../repositories/userRepository.js";
@@ -7,6 +8,8 @@ export type ICreateUser = Omit<User, "id" | "createdAt">;
 async function createUser(userData: ICreateUser) {
     await verifyTypeUser(userData.permission);
     await verifyIfAlreadyExistsByEmail(userData.email);
+    const pwdHash = await hashPassword(userData.password);
+    userData.password = pwdHash;
     await userRepository.insert(userData);
 }
 
@@ -24,6 +27,10 @@ const verifyIfAlreadyExistsByEmail = async (email: string) => {
     if (user) {
         throw new AppError("User Already Exists", 409);
     }
+}
+
+const hashPassword = async (password: string) => {
+    return await bcrypt.hash(password, 10)
 }
 
 const userService = {
