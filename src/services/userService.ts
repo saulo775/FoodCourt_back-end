@@ -1,9 +1,15 @@
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 import { User } from "@prisma/client"
 import { AppError } from "../errors/AppError.js";
 import userRepository from "../repositories/userRepository.js";
 
 export type ICreateUser = Omit<User, "id" | "createdAt">;
+export interface ILoginUser {
+    email: string;
+    password: string;
+}
 
 async function createUser(userData: ICreateUser) {
     await verifyTypeUser(userData.permission);
@@ -11,6 +17,15 @@ async function createUser(userData: ICreateUser) {
     const pwdHash = await hashPassword(userData.password);
     userData.password = pwdHash;
     await userRepository.insert(userData);
+}
+
+async function loginUser(loginData: ILoginUser) {
+    const user = await userRepository.findByEmail(loginData.email);
+    if (!user) throw new AppError("User not found", 404);
+    const comparation = comparePassword(loginData.password, user.password);
+    if (!comparation) throw new AppError("Password Incorrect", 403);
+    const token = generateToken(user.id);
+    return { user, token };
 }
 
 const verifyTypeUser = async (permission: string) => {
@@ -24,17 +39,28 @@ const verifyTypeUser = async (permission: string) => {
 
 const verifyIfAlreadyExistsByEmail = async (email: string) => {
     const user = await userRepository.findByEmail(email);
-    if (user) {
-        throw new AppError("User Already Exists", 409);
-    }
+    if (user) throw new AppError("User Already Exists", 409);
 }
 
 const hashPassword = async (password: string) => {
     return await bcrypt.hash(password, 10)
 }
 
+const comparePassword = async (password: string, dbPassword: string) => {
+    return bcrypt.compare(password, dbPassword);
+}
+
+const generateToken = (userId: number) => {
+    const data = { userId };
+    const secret = process.env.JWT_SECRET;
+    const config = { expiresIn: process.env.JWT_EXPIRATION || '1d' };
+    const token = jwt.sign(data, secret, config);
+    return token;
+}
+
 const userService = {
-    createUser
+    createUser,
+    loginUser
 }
 
 export default userService;
