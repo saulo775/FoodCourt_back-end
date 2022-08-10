@@ -24,7 +24,7 @@ model User {
 
 model Table {
   id          Int       @id @default(autoincrement())
-  numberTable Int       @unique @default(autoincrement())
+  numberTable Int       @unique
   isBusy      Boolean   @default(false)
   createdAt   DateTime  @default(now())
   sessions    Session[]

@@ -22,8 +22,8 @@ async function createUser(userData: ICreateUser) {
 async function loginUser(loginData: ILoginUser) {
     const user = await userRepository.findByEmail(loginData.email);
     if (!user) throw new AppError("User not found", 404);
-    const comparation = comparePassword(loginData.password, user.password);
-    if (!comparation) throw new AppError("Password Incorrect", 403);
+    const comparation = await comparePassword(loginData.password, user.password);
+    if (!comparation) throw new AppError("Password Incorrect", 401);
     const token = generateToken(user.id);
     return { user, token };
 }
@@ -31,9 +31,7 @@ async function loginUser(loginData: ILoginUser) {
 const verifyTypeUser = async (permission: string) => {
     if (permission === "gerente") {
         const user = await userRepository.findByPermission("gerente");
-        if (user) {
-            throw new AppError("The manager position is already taken", 409);
-        }
+        if (user) throw new AppError("The manager position is already taken", 409);
     }
 }
 
@@ -47,7 +45,8 @@ const hashPassword = async (password: string) => {
 }
 
 const comparePassword = async (password: string, dbPassword: string) => {
-    return bcrypt.compare(password, dbPassword);
+    const pwd = await bcrypt.compare(password, dbPassword);
+    return pwd
 }
 
 const generateToken = (userId: number) => {

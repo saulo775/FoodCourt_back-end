@@ -11,9 +11,7 @@ async function findByPermission(permission: string) {
 }
 
 async function insert(userData: ICreateUser) {
-    await prisma.user.create({
-        data: userData
-    });
+    await prisma.user.create({ data: userData });
 }
 
 async function findByEmail(email: string) {
@@ -25,10 +23,21 @@ async function findByEmail(email: string) {
     return user;
 }
 
+async function findById(userId: number) {
+    const user = await prisma.user.findFirst({
+        where: {
+            id: userId
+        }
+    });
+
+    return user;
+}
+
 const userRepository = {
     findByPermission,
     insert,
     findByEmail,
+    findById
 }
 
 export default userRepository;
