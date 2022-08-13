@@ -61,9 +61,9 @@ model Product {
   price           Int
   description     String
   productImage    String
+  categoryId      Int
   createdAt       DateTime         @default(now())
   Category        Category         @relation(fields: [categoryId], references: [id])
-  categoryId      Int
   sessionProducts SessionProduct[]
 
   @@map("products")
@@ -71,7 +71,7 @@ model Product {
 
 model Category {
   id        Int       @id @default(autoincrement())
-  title     String
+  title     String    @unique
   createdAt DateTime  @default(now())
   products  Product[]
 
