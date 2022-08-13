@@ -7,7 +7,7 @@ export const signUpSchema = Joi.object<ICreateUser>({
     email: Joi.string().email().required(),
     password: Joi.string().min(6).required(),
     avatarURL: Joi.string().pattern(REG_AVATAR),
-    permission: Joi.string().valid('gerente', 'caixa', 'garçom')
+    permission: Joi.string().valid('gerente', 'caixa', 'garçom').required()
 });
 
 export const signInSchema = Joi.object<ILoginUser>({

@@ -10,7 +10,11 @@ async function insert(numberTable: number) {
 
 async function findTables() {
     const tables = await prisma.table.findMany();
-    return tables
+    tables.map((table) => {
+        delete table.createdAt;
+    });
+
+    return tables;
 }
 
 const tableRepository = {

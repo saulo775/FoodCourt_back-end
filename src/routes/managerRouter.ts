@@ -6,7 +6,6 @@ import managerController from "../controllers/managerController.js";
 
 const managerRouter = Router();
 managerRouter.use(tokenMiddleware);
-//managerRouter.use(managerMiddleware);
 
 managerRouter.post("/manager/:id/tables", managerMiddleware, managerController.insertTables);
 
