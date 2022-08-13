@@ -10,7 +10,7 @@ async function insertTables(req: Request, res: Response) {
 }
 
 
-const managerController = {
+const tableController = {
     insertTables,
 }
-export default managerController;
+export default tableController;
