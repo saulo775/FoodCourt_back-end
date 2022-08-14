@@ -1,4 +1,5 @@
 import { Product } from "@prisma/client";
+import { number } from "joi";
 import { AppError } from "../errors/AppError.js";
 import categoryRepository from "../repositories/categoryRepository.js";
 import productRepository from "../repositories/productRepository.js";
@@ -13,6 +14,11 @@ async function createProduct(productData: ICreateProduct) {
     await productRepository.insert(productData);
 }
 
+async function findAllProducts(categoryId: number) {
+    const allProducts = await productRepository.findAll(categoryId);
+    return allProducts;
+}
+
 const checkIfCategoryExists = async (categoryId: number) => {
     const category = await categoryRepository.findById(categoryId);
     if (!category) throw new AppError("Category no exists", 404);
@@ -24,6 +30,7 @@ const checkIfProductExists = async (title: string) => {
 }
 
 const productService = {
-    createProduct
+    createProduct,
+    findAllProducts
 }
 export default productService;

@@ -10,3 +10,12 @@ export async function managerMiddleware(req: Request, res: Response, next: NextF
 
     next();
 }
+
+export async function waiterMiddleware(req: Request, res: Response, next: NextFunction) {
+    const { waiterId } = req.params;
+    const user = await userRepository.findById(Number(waiterId));
+    if (user.permission !== 'garçon') throw new AppError(`${user.permission} cannot perform this action`, 403);
+
+    next();
+}
+

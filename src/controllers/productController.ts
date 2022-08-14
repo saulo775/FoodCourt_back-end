@@ -7,8 +7,16 @@ async function createProduct(req: Request, res: Response) {
     res.sendStatus(201);
 }
 
+async function allProducts(req: Request, res: Response) {
+    const { categoryId } = req.params;
+    const products = await productService.findAllProducts(Number(categoryId));
+
+    return res.status(200).send(products);
+}
+
 const productsController = {
-    createProduct
+    createProduct,
+    allProducts
 }
 
 export default productsController;

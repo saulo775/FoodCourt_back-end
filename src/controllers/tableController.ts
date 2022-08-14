@@ -9,8 +9,14 @@ async function insertTables(req: Request, res: Response) {
     return res.sendStatus(201);
 }
 
+async function allTables(req: Request, res: Response) {
+    const tables = await tableService.findTables();
+
+    return res.status(200).send(tables);
+}
 
 const tableController = {
     insertTables,
+    allTables
 }
 export default tableController;

@@ -9,7 +9,8 @@ async function insert(numberTable: number) {
 }
 
 async function findTables() {
-    const tables = await prisma.table.findMany();
+    const tables = await prisma.table.findMany({ orderBy: { numberTable: 'asc' } });
+
     tables.map((table) => {
         delete table.createdAt;
     });

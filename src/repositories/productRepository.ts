@@ -16,12 +16,21 @@ async function findByTitle(title: string) {
     return product;
 }
 
+async function findAll(categoryId: number) {
+    const products = await prisma.product.findMany({
+        where: {
+            categoryId: categoryId
+        }
+    });
+    return products;
+}
 
 
 
 const productRepository = {
     insert,
-    findByTitle
+    findByTitle,
+    findAll
 }
 export default productRepository;
 
