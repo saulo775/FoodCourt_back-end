@@ -10,7 +10,14 @@ tableRouter.use(tokenMiddleware);
 tableRouter.post(
     "/tables/:managerId/insert",
     managerMiddleware,
+    tokenMiddleware,
     tableController.insertTables
 );
+
+tableRouter.get(
+    "/tables",
+    tokenMiddleware,
+    tableController.allTables
+)
 
 export default tableRouter;
