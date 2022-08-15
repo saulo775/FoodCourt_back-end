@@ -15,4 +15,10 @@ categoryRouter.post(
     categoryController.createCategory
 );
 
+categoryRouter.get(
+    "/category/all-categories",
+    tokenMiddleware,
+    categoryController.findCategories
+);
+
 export default categoryRouter;

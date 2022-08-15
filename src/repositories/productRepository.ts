@@ -2,9 +2,18 @@ import { prisma } from '../config/database.js';
 import { ICreateProduct } from './../services/productService.js';
 
 async function insert(productData: ICreateProduct) {
-    await prisma.product.create({
-        data: productData
+    console.log(typeof productData.categoryId)
+    const product = await prisma.product.create({
+        data: {
+            title: productData.title,
+            price: productData.price,
+            description: productData.description,
+            productImage: productData.productImage,
+            categoryId: Number(productData.categoryId),
+        }
     });
+
+    console.log("hello", product);
 }
 
 async function findByTitle(title: string) {

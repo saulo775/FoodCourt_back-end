@@ -9,12 +9,21 @@ async function createCategory(title: string) {
     await categoryRepository.insert(title);
 }
 
+async function findCategories() {
+    const categories = await categoryRepository.findAll();
+    categories.forEach((category) => {
+        delete category.createdAt
+    });
+    return categories;
+}
+
 const checkIfCategoryExists = async (title: string) => {
     const category = await categoryRepository.findOne(title);
     if (category) throw new AppError("Category already exists", 409);
 }
 
 const categoryService = {
-    createCategory
+    createCategory,
+    findCategories,
 }
 export default categoryService;

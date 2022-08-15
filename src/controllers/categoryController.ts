@@ -7,8 +7,15 @@ async function createCategory(req: Request, res: Response) {
     res.sendStatus(201);
 }
 
+async function findCategories(req: Request, res: Response) {
+    const categories = await categoryService.findCategories();
+
+    res.status(200).send(categories);
+}
+
 const categoryController = {
-    createCategory
+    createCategory,
+    findCategories
 }
 
 export default categoryController;

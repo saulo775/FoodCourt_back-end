@@ -16,11 +16,16 @@ async function createProduct(productData: ICreateProduct) {
 
 async function findAllProducts(categoryId: number) {
     const allProducts = await productRepository.findAll(categoryId);
+    allProducts.forEach((product) => {
+        const realPrice = product.price / 100;
+        product.price = realPrice;
+    })
+
     return allProducts;
 }
 
 const checkIfCategoryExists = async (categoryId: number) => {
-    const category = await categoryRepository.findById(categoryId);
+    const category = await categoryRepository.findById(Number(categoryId));
     if (!category) throw new AppError("Category no exists", 404);
 }
 
