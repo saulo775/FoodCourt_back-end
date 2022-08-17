@@ -18,8 +18,31 @@ async function findTables() {
     return tables;
 }
 
+async function findOneTable(tableId: number) {
+    const table = prisma.table.findFirst({
+        where: {
+            id: tableId
+        }
+    });
+    return table;
+}
+
+async function alterStatus(tableId: number, status) {
+    const table = prisma.table.update({
+        where: {
+            id: tableId
+        },
+        data: {
+            isBusy: status
+        }
+    });
+    return table;
+}
+
 const tableRepository = {
     insert,
-    findTables
+    findTables,
+    findOneTable,
+    alterStatus
 }
 export default tableRepository;

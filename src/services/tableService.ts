@@ -22,6 +22,16 @@ async function findTables() {
     return tables;
 }
 
+async function findOneTable(tableId: number) {
+    const table = await tableRepository.findOneTable(tableId);
+    return table;
+}
+
+async function alterStatusTable(tableId: number, status: boolean) {
+    const table = await tableRepository.alterStatus(tableId, status);
+    return table;
+}
+
 const checkIfTablesAlreadyExists = async () => {
     const tables = await tableRepository.findTables();
     if (tables.length > 0) throw new AppError("Tables already registered", 401);
@@ -29,6 +39,8 @@ const checkIfTablesAlreadyExists = async () => {
 
 const tableService = {
     insertTables,
-    findTables
+    findTables,
+    findOneTable,
+    alterStatusTable
 }
 export default tableService;
