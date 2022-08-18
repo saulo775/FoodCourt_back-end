@@ -8,7 +8,21 @@ async function createOrder(req: Request, res: Response) {
     res.sendStatus(201);
 }
 
+async function getAllOrders(req: Request, res: Response) {
+    const { tableId } = req.params;
+    const allOrders = await orderService.getAllOrders(Number(tableId));
+    res.send(allOrders);
+}
+
+async function closeAccount(req: Request, res: Response) {
+    const { tableId } = req.params;
+    await orderService.closeAccount(Number(tableId));
+    res.send(200);
+}
+
 const orderController = {
-    createOrder
+    createOrder,
+    getAllOrders,
+    closeAccount
 }
 export default orderController;

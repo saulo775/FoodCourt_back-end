@@ -24,6 +24,12 @@ async function findAllProducts(categoryId: number) {
     return allProducts;
 }
 
+async function findById(productId: number) {
+    const product = await productRepository.findById(productId);
+    return product
+}
+
+
 const checkIfCategoryExists = async (categoryId: number) => {
     const category = await categoryRepository.findById(Number(categoryId));
     if (!category) throw new AppError("Category no exists", 404);
@@ -34,8 +40,10 @@ const checkIfProductExists = async (title: string) => {
     if (product) throw new AppError(`${title} already exists`, 404);
 }
 
+
 const productService = {
     createProduct,
-    findAllProducts
+    findAllProducts,
+    findById
 }
 export default productService;

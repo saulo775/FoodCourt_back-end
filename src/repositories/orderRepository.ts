@@ -3,7 +3,7 @@ import { ITableOrder } from './../services/orderService';
 import { prisma } from "../config/database.js";
 
 async function findSession(tableId: number) {
-    const session = prisma.session.findFirst({
+    const session = await prisma.session.findFirst({
         where: {
             tableId,
             AND: {
@@ -39,9 +39,30 @@ async function createSessionProduct(productsOrder: number[], sessionId: number) 
     return sessionProduct
 }
 
+async function findSessionProducts(sessionId: number) {
+    const allProductIds = await prisma.sessionProduct.findMany({
+        where: {
+            sessionId: sessionId
+        }
+    });
+    return allProductIds;
+}
+
+async function closeAccount(sessionId: number) {
+    await prisma.session.update({
+        where: {
+            id: sessionId,
+        }, data: {
+            isActive: false
+        }
+    });
+}
+
 const orderRepository = {
     findSession,
     createSession,
     createSessionProduct,
+    findSessionProducts,
+    closeAccount
 }
 export default orderRepository;

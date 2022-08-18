@@ -34,12 +34,23 @@ async function findAll(categoryId: number) {
     return products;
 }
 
+async function findById(productId: number) {
+    const product = await prisma.product.findFirst({
+        where: {
+            id: productId
+        }
+    });
+
+    return product;
+}
+
 
 
 const productRepository = {
     insert,
     findByTitle,
-    findAll
+    findAll,
+    findById
 }
 export default productRepository;
 
