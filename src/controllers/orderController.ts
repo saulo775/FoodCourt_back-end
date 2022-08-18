@@ -11,13 +11,17 @@ async function createOrder(req: Request, res: Response) {
 async function getAllOrders(req: Request, res: Response) {
     const { tableId } = req.params;
     const allOrders = await orderService.getAllOrders(Number(tableId));
-    res.send(allOrders);
+    let total = 0
+    allOrders.forEach((order) => {
+        total += order.price;
+    })
+    res.send({ allOrders, total });
 }
 
 async function closeAccount(req: Request, res: Response) {
     const { tableId } = req.params;
     await orderService.closeAccount(Number(tableId));
-    res.send(200);
+    res.sendStatus(200);
 }
 
 const orderController = {
